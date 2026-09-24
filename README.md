@@ -2,7 +2,7 @@
 
 Artex is a mobile application for sharing art, ideas, and multimedia content, designed to connect artists and enthusiasts through visual, auditory, and written experiences.
 
-[click here to download the app](app-release.apk)
+[click here to download the app](https://github.com/palopao/ArteX/blob/main/app-release.apk)
 
 ---
 
