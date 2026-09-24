@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "491633325823",
+    "project_id": "artex-8fe7b",
+    "storage_bucket": "artex-8fe7b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491633325823:android:6a8fe298166c89eaa87eca",
+        "android_client_info": {
+          "package_name": "com.example.artex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeCA9g-OYih3l7ScJhXx5vrb_wRUnAqkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

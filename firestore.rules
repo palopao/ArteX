@@ -1,0 +1,156 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsUser(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function ownsPiece() {
+      return signedIn() && resource.data.authorId == request.auth.uid;
+    }
+
+    function createsOwnPiece() {
+      return signedIn() && request.resource.data.authorId == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      // Profile documents are readable only by authenticated users.
+      allow read: if signedIn();
+
+      // The client creates and edits only its own profile document.
+      allow create, delete: if ownsUser(userId);
+
+      // Normal profile edits may not alter identity or relationship arrays.
+      allow update: if ownsUser(userId)
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.friendRequests == resource.data.friendRequests
+        && request.resource.data.friendsList == resource.data.friendsList;
+
+      allow update: if ownsUser(userId)
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['friendsList'])
+        && request.resource.data.friendsList.size()
+            == resource.data.friendsList.size() - 1;
+
+      allow update: if ownsUser(userId)
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['friendsList', 'friendRequests'])
+        && request.resource.data.friendsList.hasAll(resource.data.friendsList)
+        && request.resource.data.friendRequests.size()
+            == resource.data.friendRequests.size() - 1;
+
+      // A signed-in user may append only their own UID to another profile's
+      // friendRequests array. No other target fields may change.
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['friendRequests'])
+        && request.resource.data.friendRequests.hasAll(
+          resource.data.friendRequests
+        )
+        && request.resource.data.friendRequests.hasAll([request.auth.uid])
+        && request.resource.data.friendRequests.size()
+            <= resource.data.friendRequests.size() + 1;
+
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['friendsList'])
+        && request.resource.data.friendsList.hasAll(resource.data.friendsList)
+        && request.resource.data.friendsList.hasAll([request.auth.uid])
+        && request.resource.data.friendsList.size()
+            == resource.data.friendsList.size() + 1;
+
+      allow update: if signedIn()
+        && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['friendsList'])
+        && request.resource.data.friendsList.size()
+            == resource.data.friendsList.size() - 1
+        && resource.data.friendsList.hasAll([request.auth.uid]);
+    }
+
+    match /art_pieces/{pieceId} {
+      // The Home and Explore feeds read the complete authenticated dataset.
+      allow read: if signedIn();
+
+      allow create: if createsOwnPiece();
+      allow delete: if ownsPiece();
+
+      // Authors can edit their own pieces. Other users may only change the
+      // aggregate counter by one.
+      allow update: if signedIn() && (
+        (
+          resource.data.authorId == request.auth.uid
+          && request.resource.data.authorId == resource.data.authorId
+        )
+        ||
+        (
+          request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['likesCount'])
+          && request.resource.data.authorId == resource.data.authorId
+          && (
+            request.resource.data.likesCount == resource.data.likesCount + 1
+            || request.resource.data.likesCount == resource.data.likesCount - 1
+          )
+        )
+        ||
+        (
+          request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['viewsCount'])
+          && request.resource.data.viewsCount == resource.data.viewsCount + 1
+        )
+      );
+
+      match /likes/{userId} {
+        allow read, write, delete: if signedIn()
+          && userId == request.auth.uid;
+      }
+
+      match /views/{userId} {
+        allow read, write: if signedIn()
+          && userId == request.auth.uid;
+      }
+
+      match /comments/{commentId} {
+        allow read: if signedIn();
+
+        allow create: if signedIn()
+          && request.resource.data.authorId == request.auth.uid
+          && request.resource.data.authorName is string
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 2000;
+
+        allow update, delete: if signedIn()
+          && resource.data.authorId == request.auth.uid;
+      }
+    }
+
+    // Per-user browsing history remains private to its owner.
+      match /users/{userId}/recentlyViewed/{pieceId} {
+        allow read, write: if ownsUser(userId);
+      }
+
+      match /chats/{chatId} {
+        allow create, update: if signedIn()
+          && request.resource.data.participants.hasAll([request.auth.uid]);
+        allow read: if signedIn()
+          && resource.data.participants.hasAll([request.auth.uid]);
+
+        match /messages/{messageId} {
+          allow read: if signedIn()
+            && get(/databases/$(database)/documents/chats/$(chatId))
+                .data.participants.hasAll([request.auth.uid]);
+          allow create: if signedIn()
+            && request.resource.data.senderId == request.auth.uid
+            && get(/databases/$(database)/documents/chats/$(chatId))
+                .data.participants.hasAll([request.auth.uid])
+            && request.resource.data.text is string
+            && request.resource.data.text.size() > 0;
+        }
+      }
+    }
+  }
