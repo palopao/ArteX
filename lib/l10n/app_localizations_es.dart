@@ -533,4 +533,56 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get resetEmailSent => 'Email de recuperación de contraseña enviado.';
+
+  @override
+  String get credits => 'Créditos';
+
+  @override
+  String get creditsMenuSubtitle => 'Acerca de la app y su creador.';
+
+  @override
+  String get creditsCreatedBy => 'Creado por';
+
+  @override
+  String get creditsRepository => 'Repositorio GitHub';
+
+  @override
+  String get creditsOpenSource =>
+      'ArteX es un proyecto de código abierto. ¡Las contribuciones son bienvenidas!';
+
+  @override
+  String get couldNotOpenLink => 'No se pudo abrir el enlace.';
+
+  @override
+  String get suggestions => 'Sugerencias';
+
+  @override
+  String get suggestionsMenuSubtitle => 'Envía ideas para mejorar ArteX.';
+
+  @override
+  String get suggestionsTitle => 'Comparte tus ideas';
+
+  @override
+  String get suggestionsSubtitle =>
+      '¿Tienes una sugerencia o solicitud de funcionalidad? ¡Nos encantaría escucharte!';
+
+  @override
+  String get suggestionLabel => 'Tu sugerencia';
+
+  @override
+  String get suggestionHint => 'Describe tu idea o mejora...';
+
+  @override
+  String get suggestionRequired => 'Por favor escribe tu sugerencia primero.';
+
+  @override
+  String get suggestionSend => 'Enviar sugerencia';
+
+  @override
+  String get suggestionSentSuccess =>
+      'Sugerencia enviada correctamente. ¡Gracias!';
+
+  @override
+  String get suggestionSentFailed =>
+      'No se pudo enviar tu sugerencia. Inténtalo de nuevo.';
 }

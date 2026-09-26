@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+﻿import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +10,8 @@ import '../widgets/home_tab.dart';
 import 'account_details_screen.dart';
 import 'account_settings_screen.dart';
 import 'art_piece_editor_screen.dart';
+import 'credits_screen.dart';
+import 'suggestions_screen.dart';
 import 'user_connections_screen.dart';
 
 class MyAreaTab extends ConsumerWidget {
@@ -82,6 +84,18 @@ class MyAreaTab extends ConsumerWidget {
               friendRequests: true,
             ),
           ),
+        ),
+        _ActionTile(
+          icon: Icons.lightbulb_outline,
+          title: l10n.suggestions,
+          subtitle: l10n.suggestionsMenuSubtitle,
+          onTap: () => _open(context, const SuggestionsScreen()),
+        ),
+        _ActionTile(
+          icon: Icons.info_outline,
+          title: l10n.credits,
+          subtitle: l10n.creditsMenuSubtitle,
+          onTap: () => _open(context, const CreditsScreen()),
         ),
       ],
     );
@@ -292,7 +306,7 @@ class _MyPiecesScreenState extends State<MyPiecesScreen> {
     } on FirebaseException catch (error) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${error.code}: ${error.message ?? ''}')),
+        SnackBar(content: Text('${error.code}: ${error.message ?? ""}')),
       );
     }
   }

@@ -4,7 +4,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'l10n/app_localizations.dart';
 import 'providers/app_providers.dart';
 import 'services/error_logging_service.dart';
@@ -16,6 +18,12 @@ Future<void> main() async {
   runZonedGuarded<void>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top],
+      );
+
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
@@ -27,17 +35,13 @@ Future<void> main() async {
         }
       };
       PlatformDispatcher.instance.onError = (error, stack) {
-        unawaited(
-          ErrorLoggingService.record(error, stack, fatal: true),
-        );
+        unawaited(ErrorLoggingService.record(error, stack, fatal: true));
         return true;
       };
       runApp(const ProviderScope(child: MyApp()));
     },
     (error, stack) {
-      unawaited(
-        ErrorLoggingService.record(error, stack, fatal: true),
-      );
+      unawaited(ErrorLoggingService.record(error, stack, fatal: true));
     },
   );
 }

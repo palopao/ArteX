@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "en",
   "appTitle": "Artex",
   "welcomeToArtex": "Welcome to Artex",
@@ -170,5 +170,21 @@
   "accountAlreadyExists": "An account already exists for this email.",
   "invalidEmail": "Enter a valid email address.",
   "authenticationFailed": "Authentication failed. Please try again.",
-  "resetEmailSent": "Password reset email sent."
+  "resetEmailSent": "Password reset email sent.",
+  "credits": "Credits",
+  "creditsMenuSubtitle": "About the app and its creator.",
+  "creditsCreatedBy": "Created by",
+  "creditsRepository": "GitHub Repository",
+  "creditsOpenSource": "ArteX is an open-source project. Contributions are welcome!",
+  "couldNotOpenLink": "Could not open the link.",
+  "suggestions": "Suggestions",
+  "suggestionsMenuSubtitle": "Send ideas to improve ArteX.",
+  "suggestionsTitle": "Share Your Ideas",
+  "suggestionsSubtitle": "Have a suggestion or feature request? We'd love to hear from you!",
+  "suggestionLabel": "Your suggestion",
+  "suggestionHint": "Describe your idea or improvement...",
+  "suggestionRequired": "Please write your suggestion first.",
+  "suggestionSend": "Send Suggestion",
+  "suggestionSentSuccess": "Suggestion sent successfully. Thank you!",
+  "suggestionSentFailed": "Could not send your suggestion. Please try again."
 }

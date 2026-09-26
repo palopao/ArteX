@@ -534,4 +534,14 @@ class FirestoreService {
     }
     return data;
   }
+  Future<void> saveSuggestion({required String text, String? userId}) {
+    final data = <String, dynamic>{
+      'text': text,
+      'createdAt': FieldValue.serverTimestamp(),
+    };
+    if (userId != null) {
+      data['userId'] = userId;
+    }
+    return _firestore.collection('suggestions').add(data);
+  }
 }

@@ -70,6 +70,11 @@ service cloud.firestore {
         && request.resource.data.friendsList.size()
             == resource.data.friendsList.size() - 1
         && resource.data.friendsList.hasAll([request.auth.uid]);
+
+      // Per-user browsing history remains private to its owner.
+      match /recentlyViewed/{pieceId} {
+        allow read, write: if ownsUser(userId);
+      }
     }
 
     match /art_pieces/{pieceId} {
@@ -129,28 +134,31 @@ service cloud.firestore {
       }
     }
 
-    // Per-user browsing history remains private to its owner.
-      match /users/{userId}/recentlyViewed/{pieceId} {
-        allow read, write: if ownsUser(userId);
-      }
+    match /chats/{chatId} {
+      allow create, update: if signedIn()
+        && request.resource.data.participants.hasAll([request.auth.uid]);
+      allow read: if signedIn()
+        && resource.data.participants.hasAll([request.auth.uid]);
 
-      match /chats/{chatId} {
-        allow create, update: if signedIn()
-          && request.resource.data.participants.hasAll([request.auth.uid]);
+      match /messages/{messageId} {
         allow read: if signedIn()
-          && resource.data.participants.hasAll([request.auth.uid]);
-
-        match /messages/{messageId} {
-          allow read: if signedIn()
-            && get(/databases/$(database)/documents/chats/$(chatId))
-                .data.participants.hasAll([request.auth.uid]);
-          allow create: if signedIn()
-            && request.resource.data.senderId == request.auth.uid
-            && get(/databases/$(database)/documents/chats/$(chatId))
-                .data.participants.hasAll([request.auth.uid])
-            && request.resource.data.text is string
-            && request.resource.data.text.size() > 0;
-        }
+          && get(/databases/$(database)/documents/chats/$(chatId))
+              .data.participants.hasAll([request.auth.uid]);
+        allow create: if signedIn()
+          && request.resource.data.senderId == request.auth.uid
+          && get(/databases/$(database)/documents/chats/$(chatId))
+              .data.participants.hasAll([request.auth.uid])
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0;
       }
     }
+
+    // Regra adicionada para permitir o envio de sugestões:
+    match /suggestions/{suggestionId} {
+      allow create: if signedIn()
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 1000;
+    }
   }
+}

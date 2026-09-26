@@ -1089,6 +1089,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password reset email sent.'**
   String get resetEmailSent;
+
+  /// No description provided for @credits.
+  ///
+  /// In en, this message translates to:
+  /// **'Credits'**
+  String get credits;
+
+  /// No description provided for @creditsMenuSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About the app and its creator.'**
+  String get creditsMenuSubtitle;
+
+  /// No description provided for @creditsCreatedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get creditsCreatedBy;
+
+  /// No description provided for @creditsRepository.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub Repository'**
+  String get creditsRepository;
+
+  /// No description provided for @creditsOpenSource.
+  ///
+  /// In en, this message translates to:
+  /// **'ArteX is an open-source project. Contributions are welcome!'**
+  String get creditsOpenSource;
+
+  /// No description provided for @couldNotOpenLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the link.'**
+  String get couldNotOpenLink;
+
+  /// No description provided for @suggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions'**
+  String get suggestions;
+
+  /// No description provided for @suggestionsMenuSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send ideas to improve ArteX.'**
+  String get suggestionsMenuSubtitle;
+
+  /// No description provided for @suggestionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Ideas'**
+  String get suggestionsTitle;
+
+  /// No description provided for @suggestionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a suggestion or feature request? We\'d love to hear from you!'**
+  String get suggestionsSubtitle;
+
+  /// No description provided for @suggestionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your suggestion'**
+  String get suggestionLabel;
+
+  /// No description provided for @suggestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your idea or improvement...'**
+  String get suggestionHint;
+
+  /// No description provided for @suggestionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please write your suggestion first.'**
+  String get suggestionRequired;
+
+  /// No description provided for @suggestionSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Suggestion'**
+  String get suggestionSend;
+
+  /// No description provided for @suggestionSentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestion sent successfully. Thank you!'**
+  String get suggestionSentSuccess;
+
+  /// No description provided for @suggestionSentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send your suggestion. Please try again.'**
+  String get suggestionSentFailed;
 }
 
 class _AppLocalizationsDelegate
