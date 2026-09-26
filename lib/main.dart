@@ -19,10 +19,7 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      await SystemChrome.setEnabledSystemUIMode(
-        SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top],
-      );
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
